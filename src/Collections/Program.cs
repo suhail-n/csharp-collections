@@ -7,7 +7,7 @@ namespace Collections
     {
         static void Main(string[] args)
         {
-            var filePath = @"filepath";
+            var filePath = @"pop-by-largest-final.csv";
             // ImportDataIntoArray(filePath);
             ImportDataIntoArrayList(filePath);
             TestArrayLists();
