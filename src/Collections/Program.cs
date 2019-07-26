@@ -77,7 +77,17 @@ namespace Collections
         static void ImportDataIntoArrayList(string filePath)
         {
             CsvReader reader = new CsvReader(filePath);
-            IEnumerable<Country> countries = reader.ReadAllCountries();
+            List<Country> countries = (List<Country>)reader.ReadAllCountries();
+            var lilliput = new Country
+            {
+                Name = "Lilliput",
+                Code = "LIL",
+                Region = "Somewhere",
+                Population = 2000000
+            };
+            var index = countries.FindIndex(country => country.Population < 2000000);
+            countries.Insert(index, lilliput);
+            countries.RemoveAt(index);
             foreach (var country in countries)
             {
                 System.Console.WriteLine($"{PopulationFormatter.FormatPopulation(country.Population).PadLeft(15)}: {country.Name}");
