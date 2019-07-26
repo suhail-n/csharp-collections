@@ -7,7 +7,7 @@ namespace Collections
     {
         static void Main(string[] args)
         {
-            var filePath = @"/Users/suhailnooristani/Documents/dev/csharp/csharp-collections/pop-by-largest-final.csv";
+            var filePath = @"filepath";
             // ImportDataIntoArray(filePath);
             ImportDataIntoArrayList(filePath);
             TestArrayLists();
