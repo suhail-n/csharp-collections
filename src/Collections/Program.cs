@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Immutable;
+using System.Linq;
 using System.Collections.Generic;
 using System;
 
@@ -15,7 +16,9 @@ namespace Collections
             // TestArrayLists();
             // CountryDictionary();
             // ImportDataIntoDictionary(filePath);
-            TestLinqWithList(filePath);
+            // TestLinqWithList(filePath);
+            // ImportIntoSortedDictionary(filePath);
+            ImportDataIntoImmutableArrayList(filePath);
         }
 
         /// <summary>
@@ -102,6 +105,19 @@ namespace Collections
             countries.RemoveAll(x => x.Code.Equals("FIN"));
 
             foreach (var country in countries)
+            {
+                System.Console.WriteLine($"{PopulationFormatter.FormatPopulation(country.Population).PadLeft(15)}: {country.Name}");
+            }
+        }
+        static void ImportDataIntoImmutableArrayList(string filePath)
+        {
+            CsvReader reader = new CsvReader(filePath);
+            List<Country> countries = (List<Country>)reader.ReadAllCountries();
+            var countriesImmutableBuilder = ImmutableArray.CreateBuilder<Country>();
+            countries.ForEach(x => countriesImmutableBuilder.Add(x));
+            var countriesImmutable = countriesImmutableBuilder.ToImmutableArray();
+
+            foreach (var country in countriesImmutable)
             {
                 System.Console.WriteLine($"{PopulationFormatter.FormatPopulation(country.Population).PadLeft(15)}: {country.Name}");
             }
@@ -218,6 +234,27 @@ namespace Collections
                 System.Console.WriteLine($"{PopulationFormatter.FormatPopulation((int)country.Population).PadLeft(15)}: {country.Name}");
             }
 
+        }
+
+        static void ImportIntoSortedDictionary(string filePath)
+        {
+            System.Console.WriteLine("-------------Using Sorted Dictionary-------------");
+
+            // sortedli is also a dictionary with key value pairs
+            // var sortedli = new SortedList<string, Country>();
+            // sortedli.Add("NOR", new Country());
+
+            var csv = new CsvReader(filePath);
+            var countries = csv.ReadAllCountries();
+            var countriesSorted = new SortedDictionary<string, Country>();
+            foreach (var country in countries)
+            {
+                countriesSorted.Add(country.Code, country);
+            }
+            foreach (var country in countriesSorted.Take(10))
+            {
+                System.Console.WriteLine($"{PopulationFormatter.FormatPopulation((int)country.Value.Population).PadLeft(15)}: {country.Value.Code}");
+            }
         }
     }
 }
