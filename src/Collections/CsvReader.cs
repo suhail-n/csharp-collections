@@ -43,6 +43,21 @@ namespace Collections
             }
             return countries;
         }
+        public Dictionary<string, Country> ReadAllCountriesDict()
+        {
+            var countries = new Dictionary<string, Country>();
+            using (var sr = new StreamReader(this._csvFilePath))
+            using (var csv = new CsvHelper.CsvReader(sr))
+            {
+                csv.Configuration.TypeConverterCache.AddConverter<int>(new CustomIntConverter());
+                while (csv.Read())
+                {
+                    var country = csv.GetRecord<Country>();
+                    countries.Add(country.Code, country);
+                }
+            }
+            return countries;
+        }
         // public Country ReadCountryFromCsvLine(string csvLine)
         // {
         //     // string[] parts = csvLine.Split(",");
